@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAP6OXI1t3xgoiRrS2RrYY-pmOjKYFnyNU&callback=initMap"
+        async defer></script>
+    <title>Hop To It</title>
+</head>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<body>
+    <header>
+        <div class="hero-image">
+            <div class="hero-text">
+                <h1 style="font-size:50px">Hop To It</h1>
+                <div class="input-field col s12">
+                    <textarea id="search-input" class="materialize-textarea" type="search"
+                        placeholder="Search"></textarea>
+                    <a class="waves-effect waves-light btn-small" type="submit" id="search">Search</a>
+                    <a class="waves-effect waves-light btn-small" id="myBtn" h="39.8" v="-104.8">View Map</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+
+        <div id="brewery-list">
+        </div>
+    </main>
+
+    <div id="myModal" class="modal">
+
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="row">
+                <div class="col s7 m4">
+                    <div class="card">
+                        <div id="map" style="width: 500px; height: 335px; display: none; text-align: center;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="page-footer teal lighten-2">
+        <div class="container">
+            <div class="footer-copyright">
+                <div class="container">
+                    © 2019 Copyright
+                    <a class="grey-text text-lighten-4 right" href="weed.html">Need weed?</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+
+</html>

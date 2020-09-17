@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <title>Pot In Town</title>
+</head>
+
+<body>
+  <header>
+    <div class="hero-banner">
+      <div class="hero-text">
+        <h1 style="font-size:50px" id="pot-input">Strain Of The Day</h1>
+        <div class="input-field col s12">
+          <a class="waves-effect waves-light btn-small" type="submit" id="select-pot">Generate a Strain</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- pot Select Box -->
+  <!-- <form id="pot-form"> -->
+
+  <!-- Label for Text Box -->
+  <!-- <label for="pot-input" id="pot-input">Strain Of The Day</label> -->
+
+  <!-- Text Input Box -->
+  <!-- <input type="text" id="pot-input"><br> -->
+
+  <!-- Submit Button -->
+  <!-- <input id="select-pot" type="submit" value=" Get Your Herb !!!">
+  </form> -->
+
+  <!-- <br> -->
+
+  <!-- pot Information -->
+  <main>
+    <div id="pot-div"></div>
+
+    <!-- <div id="map" style="width: 500px; height: 400px; display: none;"></div>
+  <button id="button" h= "39.8" v= "-104.8">view map</button> -->
+
+    <br>
+    <!-- Button to generate images -->
+    <div class="row">
+      <div class="col s12 m7">
+        <div class="card">
+          <div class="card-content">
+            <div id="gifs-appear-here"></div>
+          </div>
+          <div class="card-action">
+            <button data-pot="weed" class="waves-effect waves-light btn">GIPHY Nugs</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <button data-pot="weed">GIPHY Nugs</button>   -->
+
+    <!-- where gif images appear  -->
+
+    <!-- <div id="gifs-appear-here"></div> -->
+
+  </main>
+
+  <footer class="page-footer teal lighten-2">
+    <div class="container">
+      <div class="footer-copyright">
+        <div class="container">
+          © 2019 Copyright
+          <a class="grey-text text-lighten-4 right" href="index.html">Need brews?</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+
+
+  var gifButton = 0;
+  //Function to disply Strain names randomly
+
+  function searchWeedInTown(pot) {
+
+    // Querying the strain api
+    var queryURL = "https://strainapi.evanbusse.com/nqLRKsd/strains/search/all" + pot;
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function (response) {
+
+      // Printing the entire object to console
+      console.log(response);
+      console.log(response.Alaska);
+      var keys = Object.keys(response)
+      console.log(keys);
+      var oneStrain = keys[Math.floor(Math.random() * keys.length)];
+      console.log(oneStrain);
+
+      // Console all the strain random results
+      console.log(response[oneStrain].effects.medical.join(", "));
+      console.log(response[oneStrain].effects.negative[1]);
+      console.log(response[oneStrain].effects.positive[1]);
+      console.log(response[oneStrain].flavors[1]);
+      console.log(response[oneStrain].id);
+      console.log(response[oneStrain].race);
+
+
+      // Looping through each item in the array and logging a message to the console.
+
+      var potName = $("<h4>").text("Strain Name: " + oneStrain);
+      var potmedical = $("<p>").text("Medicine for: " + response[oneStrain].effects.medical.join(" , "));
+      var potnegative = $("<p>").text("Negative Effects: " + response[oneStrain].effects.negative.join(" , "));
+      var potpostive = $("<p>").text("Postive Effects: " + response[oneStrain].effects.positive.join(" , "));
+      var potId = $("<p>").text("Strain ID: " + response[oneStrain].id);
+      var potFlavors = $("<p>").text("Flavor: " + response[oneStrain].flavors.join(" , "));
+      var potEffects = $("<p>").text(response.potEffects);
+      var potRace = $("<p>").text("Race: " + response[oneStrain].race);
+
+
+      // Empty the contents of the pot-div, append the new pot content
+      $("#pot-div").empty();
+      $("#pot-div").append(potName, potmedical, potnegative, potpostive, potId, potRace, potFlavors, potEffects);
+    });
+  }
+
+  // Event handler for user clicking the select-pot button
+  $("#select-pot").on("click", function (event) {
+    // Preventing the button from trying to submit the form
+    event.preventDefault();
+    // Storing the pot name
+    var inputpot = $("#pot-input").val().trim();
+    // Running the searchWeedInTown function(passing in the pot as an argument)
+    searchWeedInTown(inputpot);
+  });
+
+
+  // Event listener for all button elements
+  $("button").on("click", function () {
+
+    if (gifButton > 0) {
+      var gifOffset = gifButton * 3;
+    }
+
+    gifButton++
+    // In this case, the "this" keyword refers to the button that was clicked
+    var pot = $(this).attr("data-pot");
+
+    // clear gif appears here
+    $("#gifs-appear-here").empty();
+
+    // Constructing a URL to search Giphy for pot images
+    var limit = 1;
+
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+      "ganja" + "&api_key=TI8sEyKJcQsjiUG1d46rX8PRy2iHzGj8&limit=" + limit + "&offset=" + gifOffset;
+
+    // Performing our AJAX GET request
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    })
+
+
+
+      // After the data comes back from the API
+      .then(function (response) {
+        // Storing an array of results in the results variable
+        var results = response.data;
+        console.log(response);
+
+        // Looping over every result item
+        for (var i = 0; i < results.length; i++) {
+          var gifDiv = $("<div>");
+
+          // Creating an image tag
+          var potImage = $("<img>");
+
+          // Giving the image tag an src attribute of a proprty pulled off the
+          // result item
+          console.log(results[i].images.fixed_height.url);
+          potImage.attr("src", results[i].images.fixed_height.url);
+
+          // Appending the Image we created to the "gifDiv" div we created
+          // gifDiv.append(p);
+          gifDiv.append(potImage);
+
+          // Prepending the gifDiv to the "#gifs-appear-here" div in the HTML
+          $("#gifs-appear-here").prepend(gifDiv);
+
+        }
+      });
+  });
+
+
+</script>
+
+</html>
